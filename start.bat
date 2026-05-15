@@ -1,0 +1,3 @@
+@echo off
+echo Starting Team Task Manager...
+uvicorn app.main:app --reload

@@ -1,0 +1,41 @@
+<tr id="task-row-{{ task.id }}" class="group transition duration-300 hover:bg-slate-50 {{ 'opacity-75' if task.status.value == 'DONE' else '' }}">
+    <td class="px-6 py-4">
+        <div class="font-semibold text-slate-800 {{ 'line-through text-slate-400' if task.status.value == 'DONE' else '' }}">
+            {{ task.title }}
+        </div>
+        {% if task.description %}
+        <div class="text-xs text-slate-500 mt-1 truncate max-w-xs">{{ task.description }}</div>
+        {% endif %}
+    </td>
+    <td class="px-6 py-4">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+            {{ task.project.name }}
+        </span>
+    </td>
+    <td class="px-6 py-4 text-sm text-slate-600 flex items-center gap-2">
+        {% if task.assignee %}
+        <div class="w-6 h-6 rounded-full bg-indigo-200 text-indigo-700 flex items-center justify-center font-bold text-xs">
+            {{ task.assignee.username[0] | upper }}
+        </div>
+        {{ task.assignee.username }}
+        {% else %}
+        <span class="text-slate-400 italic">Unassigned</span>
+        {% endif %}
+    </td>
+    <td class="px-6 py-4">
+        <!-- HTMX form to dynamically swap status without page reload -->
+        <!-- We use hx-patch and target the row itself -->
+        <select name="status" 
+                hx-patch="/tasks/{{ task.id }}/status" 
+                hx-target="#task-row-{{ task.id }}" 
+                hx-swap="outerHTML"
+                class="border border-slate-300 p-1.5 rounded-md text-xs font-bold outline-none cursor-pointer transition
+                    {% if task.status.value == 'TODO' %} bg-yellow-50 text-yellow-700 border-yellow-200 
+                    {% elif task.status.value == 'IN_PROGRESS' %} bg-blue-50 text-blue-700 border-blue-200 
+                    {% else %} bg-green-50 text-green-700 border-green-200 {% endif %}">
+            <option value="TODO" {% if task.status.value == 'TODO' %}selected{% endif %} class="text-yellow-700 font-bold bg-white">TODO</option>
+            <option value="IN_PROGRESS" {% if task.status.value == 'IN_PROGRESS' %}selected{% endif %} class="text-blue-700 font-bold bg-white">IN_PROGRESS</option>
+            <option value="DONE" {% if task.status.value == 'DONE' %}selected{% endif %} class="text-green-700 font-bold bg-white">DONE</option>
+        </select>
+    </td>
+</tr>

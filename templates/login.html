@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
+    <div class="bg-white p-10 rounded-2xl shadow-xl w-96 transform transition-all hover:scale-105">
+        <h2 class="text-3xl font-extrabold mb-8 text-center text-indigo-600">Task Manager</h2>
+        
+        {% if request.query_params.get("error") %}
+        <div class="bg-red-50 text-red-600 p-3 rounded-lg mb-6 text-sm text-center border border-red-200">
+            Invalid credentials. Please try again.
+        </div>
+        {% endif %}
+        
+        <form action="/login" method="post" class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold mb-1 text-slate-700">Username</label>
+                <input type="text" name="username" class="w-full border border-slate-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" required>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1 text-slate-700">Password</label>
+                <input type="password" name="password" class="w-full border border-slate-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" required>
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 text-white font-semibold p-3 rounded-lg hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition duration-200 mt-2">
+                Sign In
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
