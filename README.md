@@ -39,6 +39,9 @@ pip install -r requirements.txt
 # Run server pipeline
 uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 
+
+5. WORKING VIDEO : https://drive.google.com/drive/folders/14I6D9AK8qSCEjavLvtF8Uv8Gq9sGIcYL?usp=sharing
+
 ========================================================================
 DEPLOYED LIVE REGISTRY BY AMALV313-PNG
 ========================================================================
