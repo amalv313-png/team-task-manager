@@ -29,7 +29,7 @@ def root(request: Request):
 
 @app.get("/login", response_class=HTMLResponse)
 def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request, "login.html")
 
 @app.post("/login")
 def login_action(
@@ -66,8 +66,7 @@ def dashboard(request: Request, db: Session = Depends(get_db), current_user: mod
     tasks = db.query(models.Task).all()
     users = db.query(models.User).all()
     
-    return templates.TemplateResponse("dashboard.html", {
-        "request": request, 
+    return templates.TemplateResponse(request, "dashboard.html", {
         "user": current_user,
         "projects": projects,
         "tasks": tasks,
@@ -109,7 +108,7 @@ def update_task_status(
         db.commit()
         db.refresh(task)
     
-    return templates.TemplateResponse("partials/task_row.html", {"request": request, "task": task})
+    return templates.TemplateResponse(request, "partials/task_row.html", {"task": task})
 
 @app.post("/projects")
 def create_project(

@@ -1,6 +1,6 @@
 <tr id="task-row-{{ task.id }}" class="group transition duration-300 hover:bg-slate-50 {{ 'opacity-75' if task.status.value == 'DONE' else '' }}">
     <td class="px-6 py-4">
-        <div class="font-semibold text-slate-800 {{ 'line-through text-slate-400' if task.status.value == 'DONE' else '' }}">
+        <div class="font-semibold text-slate-800 {{ 'text-slate-400' if task.status.value == 'DONE' else '' }}">
             {{ task.title }}
         </div>
         {% if task.description %}
