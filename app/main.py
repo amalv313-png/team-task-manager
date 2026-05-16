@@ -8,9 +8,14 @@ from app import models, auth
 from app.database import engine, get_db
 from app.config import settings
 
-models.Base.metadata.create_all(bind=engine)
+from contextlib import asynccontextmanager
 
-app = FastAPI(title="Team Task Manager")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    models.Base.metadata.create_all(bind=engine)
+    yield
+
+app = FastAPI(title="Team Task Manager", lifespan=lifespan)
 templates = Jinja2Templates(directory="templates")
 
 # Dependency for HTMX requests
