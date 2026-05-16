@@ -7,11 +7,16 @@ from datetime import timedelta
 from app import models, auth
 from app.database import engine, get_db
 from app.config import settings
+import init_db
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Team Task Manager")
 templates = Jinja2Templates(directory="templates")
+
+@app.on_event("startup")
+def on_startup():
+    init_db.init()
 
 # Dependency for HTMX requests
 def is_htmx(request: Request):
