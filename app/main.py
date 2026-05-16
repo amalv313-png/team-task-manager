@@ -9,10 +9,37 @@ from app.database import engine, get_db
 from app.config import settings
 
 from contextlib import asynccontextmanager
+from app.database import SessionLocal
+from app import auth
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     models.Base.metadata.create_all(bind=engine)
+    
+    # Auto-seed the database
+    db = SessionLocal()
+    try:
+        admin = db.query(models.User).filter(models.User.username == "admin").first()
+        if not admin:
+            admin = models.User(
+                username="admin",
+                email="admin@example.com",
+                hashed_password=auth.get_password_hash("admin123"),
+                role=models.Role.ADMIN
+            )
+            db.add(admin)
+            
+            member = models.User(
+                username="member",
+                email="member@example.com",
+                hashed_password=auth.get_password_hash("member123"),
+                role=models.Role.MEMBER
+            )
+            db.add(member)
+            db.commit()
+    finally:
+        db.close()
+        
     yield
 
 app = FastAPI(title="Team Task Manager", lifespan=lifespan)
